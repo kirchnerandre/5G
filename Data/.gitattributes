@@ -1,0 +1,2 @@
+device_0_channel_0_freq_2510.550MHz_SR_15.360Msps_gain_40.00dB_BW_30.720MHz_ant_LNAL_samples_3839999_1152000_2793600.cf32 filter=lfs diff=lfs merge=lfs -text
+device_0_channel_0_freq_2145.000MHz_SR_30.720Msps_gain_40.00dB_BW_30.720MHz_ant_LNAL_samples_30719999_20250607_212351.cf32 filter=lfs diff=lfs merge=lfs -text

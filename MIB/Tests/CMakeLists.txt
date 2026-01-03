@@ -3,7 +3,7 @@ enable_testing()
 
 add_executable(
     Test_001
-    Test_001.cpp)
+    Test_001_FourierTransform.cpp)
 add_test(
     NAME    Test_001
     COMMAND ./Test_001.exe)
