@@ -11,7 +11,6 @@ namespace
     constexpr uint32_t  _x_length   = 2000u;
     constexpr uint32_t  _y_length   = 900u;
     constexpr uint32_t  _y_border   = 50u;
-    constexpr uint8_t   _magic[]    = { 'P', '5' };
 
 
     float get_modulus(Data::DATA_T& Data)
@@ -209,7 +208,7 @@ namespace
         }
 
         fprintf(file, "P5\n");
-        fprintf(file, "%d %d\n", _x_length, _y_length);
+        fprintf(file, "%d %d\n", _x_length, (_y_border + _y_length + _y_border) * 3u);
         fprintf(file, "%d\n", 255);
 
         for (size_t i = 0u; i < (_y_border + _y_length + _y_border) * _x_length * 3u; i++)

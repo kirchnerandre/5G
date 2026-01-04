@@ -7,5 +7,5 @@
 
 namespace Graphics
 {
-    bool plot(Data::DATAS_T& Datas, std::string Filename);
+    bool plot(Data::DATAS_T& Datas, std::string& Filename);
 }
