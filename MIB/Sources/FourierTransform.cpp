@@ -13,7 +13,7 @@ namespace
 
 namespace FourierTransform
 {
-    bool forward (DATAS_T& Output, DATAS_T& Input)
+    bool forward (Data::DATAS_T& Output, Data::DATAS_T& Input)
     {
         if (Output.size() != Input.size())
         {
@@ -34,7 +34,7 @@ namespace FourierTransform
     }
 
 
-    bool backward(DATAS_T& Output, DATAS_T& Input)
+    bool backward(Data::DATAS_T& Output, Data::DATAS_T& Input)
     {
         if (Output.size() != Input.size())
         {
