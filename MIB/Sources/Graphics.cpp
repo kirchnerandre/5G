@@ -28,6 +28,7 @@ namespace
 
         if (x_min == x_max)
         {
+//printf("A\n");
             for (int32_t y = y_min; y <= y_max; y++)
             {
                 Buffer[y * _x_length + x_min] = 0xff;
@@ -35,6 +36,7 @@ namespace
         }
         else if (y_max - y_min >= x_max - x_min)
         {
+printf("B\n");
             float m = static_cast<float>(y_max - y_min) / static_cast<float>(x_max - x_min);
 
             for (int32_t y = y_min; y <= y_max; y++)
@@ -46,6 +48,7 @@ namespace
         }
         else
         {
+printf("C\n");
             float m = static_cast<float>(y_max - y_min) / static_cast<float>(x_max - x_min);
 
             for (int32_t x = x_min; x <= x_max; x++)
@@ -60,13 +63,13 @@ namespace
 
     void plot_modules(uint8_t* Buffer, Data::DATAS_T& Datas)
     {
-        float x_min = Datas[0u].Time;
-        float x_max = Datas[0u].Time;
+        float x_min = Datas[0u].TimeFrequency;
+        float x_max = Datas[0u].TimeFrequency;
 
         for (size_t i = 1u; i < Datas.size(); i++)
         {
-            x_min = x_min < Datas[i].Time ? x_min : Datas[i].Time;
-            x_max = x_max > Datas[i].Time ? x_max : Datas[i].Time;
+            x_min = x_min < Datas[i].TimeFrequency ? x_min : Datas[i].TimeFrequency;
+            x_max = x_max > Datas[i].TimeFrequency ? x_max : Datas[i].TimeFrequency;
         }
 
         float y_min = get_modulus(Datas[0u]);
@@ -81,13 +84,14 @@ namespace
         float x_scale = static_cast<float>(_x_length) / (x_max - x_min);
         float y_scale = static_cast<float>(_y_length) / (y_max - y_min);
 
-        uint32_t x_previous = static_cast<uint32_t>(x_scale * (Datas[0u].Time         - x_min));
-        uint32_t y_previous = static_cast<uint32_t>(y_scale * (get_modulus(Datas[0u]) - y_min));
+        uint32_t x_previous = static_cast<uint32_t>(x_scale * (Datas[0u].TimeFrequency - x_min));
+        uint32_t y_previous = static_cast<uint32_t>(y_scale * (get_modulus(Datas[0u])  - y_min));
 
         for (size_t i = 1u; i < Datas.size(); i++)
         {
-            uint32_t x_current = static_cast<uint32_t>(x_scale * (Datas[i].Time         - x_min));
-            uint32_t y_current = static_cast<uint32_t>(y_scale * (get_modulus(Datas[i]) - y_min));
+printf("%f\n", x_previous);
+            uint32_t x_current = static_cast<uint32_t>(x_scale * (Datas[i].TimeFrequency - x_min));
+            uint32_t y_current = static_cast<uint32_t>(y_scale * (get_modulus(Datas[i])  - y_min));
 
             plot_line(Buffer, x_previous, y_previous, x_current, y_current);
 
@@ -99,13 +103,13 @@ namespace
 
     void plot_reals(uint8_t* Buffer, Data::DATAS_T& Datas)
     {
-        float x_min = Datas[0u].Time;
-        float x_max = Datas[0u].Time;
+        float x_min = Datas[0u].TimeFrequency;
+        float x_max = Datas[0u].TimeFrequency;
 
         for (size_t i = 1u; i < Datas.size(); i++)
         {
-            x_min = x_min < Datas[i].Time ? x_min : Datas[i].Time;
-            x_max = x_max > Datas[i].Time ? x_max : Datas[i].Time;
+            x_min = x_min < Datas[i].TimeFrequency ? x_min : Datas[i].TimeFrequency;
+            x_max = x_max > Datas[i].TimeFrequency ? x_max : Datas[i].TimeFrequency;
         }
 
         float y_min = Datas[0u].Real;
@@ -120,13 +124,13 @@ namespace
         float x_scale = static_cast<float>(_x_length) / (x_max - x_min);
         float y_scale = static_cast<float>(_y_length) / (y_max - y_min);
 
-        uint32_t x_previous = static_cast<uint32_t>(x_scale * (Datas[0u].Time - x_min));
-        uint32_t y_previous = static_cast<uint32_t>(y_scale * (Datas[0u].Real - y_min));
+        uint32_t x_previous = static_cast<uint32_t>(x_scale * (Datas[0u].TimeFrequency - x_min));
+        uint32_t y_previous = static_cast<uint32_t>(y_scale * (Datas[0u].Real          - y_min));
 
         for (size_t i = 1u; i < Datas.size(); i++)
         {
-            uint32_t x_current = static_cast<uint32_t>(x_scale * (Datas[i].Time - x_min));
-            uint32_t y_current = static_cast<uint32_t>(y_scale * (Datas[i].Real - y_min));
+            uint32_t x_current = static_cast<uint32_t>(x_scale * (Datas[i].TimeFrequency - x_min));
+            uint32_t y_current = static_cast<uint32_t>(y_scale * (Datas[i].Real          - y_min));
 
             plot_line(Buffer, x_previous, y_previous, x_current, y_current);
 
@@ -138,13 +142,13 @@ namespace
 
     void plot_imaginaries(uint8_t* Buffer, Data::DATAS_T& Datas)
     {
-        float x_min = Datas[0u].Time;
-        float x_max = Datas[0u].Time;
+        float x_min = Datas[0u].TimeFrequency;
+        float x_max = Datas[0u].TimeFrequency;
 
         for (size_t i = 1u; i < Datas.size(); i++)
         {
-            x_min = x_min < Datas[i].Time ? x_min : Datas[i].Time;
-            x_max = x_max > Datas[i].Time ? x_max : Datas[i].Time;
+            x_min = x_min < Datas[i].TimeFrequency ? x_min : Datas[i].TimeFrequency;
+            x_max = x_max > Datas[i].TimeFrequency ? x_max : Datas[i].TimeFrequency;
         }
 
         float y_min = Datas[0u].Imaginary;
@@ -159,13 +163,13 @@ namespace
         float x_scale = static_cast<float>(_x_length) / (x_max - x_min);
         float y_scale = static_cast<float>(_y_length) / (y_max - y_min);
 
-        uint32_t x_previous = static_cast<uint32_t>(x_scale * (Datas[0u].Time      - x_min));
-        uint32_t y_previous = static_cast<uint32_t>(y_scale * (Datas[0u].Imaginary - y_min));
+        uint32_t x_previous = static_cast<uint32_t>(x_scale * (Datas[0u].TimeFrequency - x_min));
+        uint32_t y_previous = static_cast<uint32_t>(y_scale * (Datas[0u].Imaginary     - y_min));
 
         for (size_t i = 1u; i < Datas.size(); i++)
         {
-            uint32_t x_current = static_cast<uint32_t>(x_scale * (Datas[i].Time - x_min));
-            uint32_t y_current = static_cast<uint32_t>(y_scale * (Datas[i].Real - y_min));
+            uint32_t x_current = static_cast<uint32_t>(x_scale * (Datas[i].TimeFrequency - x_min));
+            uint32_t y_current = static_cast<uint32_t>(y_scale * (Datas[i].Real          - y_min));
 
             plot_line(Buffer, x_previous, y_previous, x_current, y_current);
 

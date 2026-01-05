@@ -9,7 +9,7 @@ namespace Data
     {
         float   Real;
         float   Imaginary;
-        float   Time;
+        float   TimeFrequency;
     };
 
     typedef std::vector<DATA_T> DATAS_T;

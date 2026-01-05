@@ -23,6 +23,8 @@ namespace FourierTransform
 
         for (size_t k = 0u; k < Input.size(); k++)
         {
+            Output[k].TimeFrequency = static_cast<float>(k);
+
             for (size_t n = 0u; n < Input.size(); n++)
             {
                 Output[k].Real      += Input[n].Real * std::cos(- 2 * _pi * k * n / Input.size()) - Input[n].Imaginary * std::sin(- 2 * _pi * k * n / Input.size());
@@ -44,6 +46,8 @@ namespace FourierTransform
 
         for (size_t k = 0u; k < Input.size(); k++)
         {
+            Output[k].TimeFrequency = static_cast<float>(k);
+
             for (size_t n = 0u; n < Input.size(); n++)
             {
                 Output[k].Real      += Input[n].Real * std::cos(2 * _pi * k * n / Input.size()) - Input[n].Imaginary * std::sin(2 * _pi * k * n / Input.size());
