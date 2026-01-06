@@ -21,39 +21,49 @@ namespace
 
     void plot_line(uint8_t* Buffer, uint32_t XPrevious, uint32_t YPrevious, uint32_t XCurrent, uint32_t YCurrent)
     {
-        int32_t x_min = static_cast<int32_t>(XPrevious < XCurrent ? XPrevious : XCurrent);
-        int32_t x_max = static_cast<int32_t>(XPrevious > XCurrent ? XPrevious : XCurrent);
-        int32_t y_min = static_cast<int32_t>(YPrevious < YCurrent ? YPrevious : YCurrent);
-        int32_t y_max = static_cast<int32_t>(YPrevious > YCurrent ? YPrevious : YCurrent);
+        YPrevious   = _y_length - YPrevious;
+        YCurrent    = _y_length - YCurrent;
 
-        if (x_min == x_max)
+        if (XPrevious == XCurrent)
         {
-//printf("A\n");
-            for (int32_t y = y_min; y <= y_max; y++)
+printf("AA\n");
+            for (uint32_t y = YPrevious; y <= YCurrent; y++)
             {
-                Buffer[y * _x_length + x_min] = 0xff;
+                Buffer[y * _x_length + XPrevious] = 0xff;
             }
         }
-        else if (y_max - y_min >= x_max - x_min)
+        else if (std::abs(static_cast<int32_t>(YCurrent) - static_cast<int32_t>(YPrevious)) >= std::abs(static_cast<int32_t>(XCurrent) - static_cast<int32_t>(XPrevious)))
         {
-printf("B\n");
-            float m = static_cast<float>(y_max - y_min) / static_cast<float>(x_max - x_min);
+            float m = (static_cast<float>(YCurrent) - static_cast<float>(YPrevious))
+                    / (static_cast<float>(XCurrent) - static_cast<float>(XPrevious));
 
-            for (int32_t y = y_min; y <= y_max; y++)
+            if (YCurrent >= YPrevious)
             {
-                int32_t x = x_min + static_cast<int32_t>((y - y_min) / m + 0.5f);
+                for (uint32_t y = YPrevious; y <= YCurrent; y++)
+                {
+                    uint32_t x = XPrevious + static_cast<uint32_t>((static_cast<float>(y) - static_cast<float>(YPrevious)) / m + 0.5f);
 
-                Buffer[y * _x_length + x] = 0xff;
+                    Buffer[y * _x_length + x] = 0xff;
+                }
+            }
+            else
+            {
+                for (uint32_t y = YCurrent; y <= YPrevious; y++)
+                {
+                    uint32_t x = XPrevious + static_cast<uint32_t>((static_cast<float>(y) - static_cast<float>(YPrevious)) / m + 0.5f);
+
+                    Buffer[y * _x_length + x] = 0xff;
+                }
             }
         }
         else
         {
-printf("C\n");
-            float m = static_cast<float>(y_max - y_min) / static_cast<float>(x_max - x_min);
+            float m = (static_cast<float>(YCurrent) - static_cast<float>(YPrevious))
+                    / (static_cast<float>(XCurrent) - static_cast<float>(XPrevious));
 
-            for (int32_t x = x_min; x <= x_max; x++)
+            for (uint32_t x = XPrevious; x <= XCurrent; x++)
             {
-                int32_t y = y_min + static_cast<int32_t>((x - x_min) * m + 0.5f);
+                uint32_t y = YPrevious + static_cast<uint32_t>((x - XPrevious) * m + 0.5f);
 
                 Buffer[y * _x_length + x] = 0xff;
             }
@@ -89,7 +99,6 @@ printf("C\n");
 
         for (size_t i = 1u; i < Datas.size(); i++)
         {
-printf("%f\n", x_previous);
             uint32_t x_current = static_cast<uint32_t>(x_scale * (Datas[i].TimeFrequency - x_min));
             uint32_t y_current = static_cast<uint32_t>(y_scale * (get_modulus(Datas[i])  - y_min));
 
@@ -248,9 +257,9 @@ namespace Graphics
             goto terminate;
         }
 
-        plot_modules    (&buffer[(_y_border + _y_length + _y_border) * _x_length * 0u], Datas);
+//      plot_modules    (&buffer[(_y_border + _y_length + _y_border) * _x_length * 0u], Datas);
         plot_reals      (&buffer[(_y_border + _y_length + _y_border) * _x_length * 1u], Datas);
-        plot_imaginaries(&buffer[(_y_border + _y_length + _y_border) * _x_length * 2u], Datas);
+//      plot_imaginaries(&buffer[(_y_border + _y_length + _y_border) * _x_length * 2u], Datas);
 
         if (!print(buffer, Filename))
         {
