@@ -12,6 +12,7 @@ namespace
     constexpr uint32_t  _x_border   = 50u;
     constexpr uint32_t  _y_length   = 900u;
     constexpr uint32_t  _y_border   = 50u;
+    constexpr float     _phy        = 1.0f;
 
 
     float get_modulus(Data::DATA_T& Data)
@@ -25,18 +26,11 @@ namespace
         YPrevious   = _y_length - YPrevious;
         YCurrent    = _y_length - YCurrent;
 
-        if (XPrevious == XCurrent)
-        {
-            for (uint32_t y = YPrevious; y <= YCurrent; y++)
-            {
-                Buffer[y * _x_length + XPrevious] = 0xff;
-            }
-        }
-        else if (std::abs(static_cast<int32_t>(YCurrent) - static_cast<int32_t>(YPrevious)) >= std::abs(static_cast<int32_t>(XCurrent) - static_cast<int32_t>(XPrevious)))
-        {
-            float m = (static_cast<float>(YCurrent) - static_cast<float>(YPrevious))
-                    / (static_cast<float>(XCurrent) - static_cast<float>(XPrevious));
+        float m = (static_cast<float>(YCurrent) - static_cast<float>(YPrevious))
+                / (static_cast<float>(XCurrent) - static_cast<float>(XPrevious) + _phy);
 
+        if (std::abs(static_cast<int32_t>(YCurrent) - static_cast<int32_t>(YPrevious)) >= std::abs(static_cast<int32_t>(XCurrent) - static_cast<int32_t>(XPrevious)))
+        {
             if (YCurrent >= YPrevious)
             {
                 for (uint32_t y = YPrevious; y <= YCurrent; y++)
@@ -58,9 +52,6 @@ namespace
         }
         else
         {
-            float m = (static_cast<float>(YCurrent) - static_cast<float>(YPrevious))
-                    / (static_cast<float>(XCurrent) - static_cast<float>(XPrevious));
-
             for (uint32_t x = XPrevious; x <= XCurrent; x++)
             {
                 uint32_t y = YPrevious + static_cast<uint32_t>((x - XPrevious) * m + 0.5f);
