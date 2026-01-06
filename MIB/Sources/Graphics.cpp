@@ -248,9 +248,9 @@ namespace Graphics
             goto terminate;
         }
 
-//      plot_modules    (&buffer[(_y_border + _y_length + _y_border) * (_x_border + _x_length + _x_border) * 0u], Datas);
+        plot_modules    (&buffer[(_y_border + _y_length + _y_border) * (_x_border + _x_length + _x_border) * 0u], Datas);
         plot_reals      (&buffer[(_y_border + _y_length + _y_border) * (_x_border + _x_length + _x_border) * 1u], Datas);
-//      plot_imaginaries(&buffer[(_y_border + _y_length + _y_border) * (_x_border + _x_length + _x_border) * 2u], Datas);
+        plot_imaginaries(&buffer[(_y_border + _y_length + _y_border) * (_x_border + _x_length + _x_border) * 2u], Datas);
 
         if (!print(buffer, Filename))
         {
