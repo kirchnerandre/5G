@@ -8,7 +8,7 @@
 
 namespace
 {
-    constexpr uint32_t  _x_length   = 2000u;
+    constexpr uint32_t  _x_length   = 1900u;
     constexpr uint32_t  _x_border   = 50u;
     constexpr uint32_t  _y_length   = 900u;
     constexpr uint32_t  _y_border   = 50u;
@@ -37,7 +37,7 @@ namespace
                 {
                     uint32_t x = XPrevious + static_cast<uint32_t>((static_cast<float>(y) - static_cast<float>(YPrevious)) / m + 0.5f);
 
-                    Buffer[y * _x_length + x] = 0xff;
+                    Buffer[y * (_x_border + _x_length + _x_border) + x + _x_border] = 0xff;
                 }
             }
             else
@@ -46,7 +46,7 @@ namespace
                 {
                     uint32_t x = XPrevious + static_cast<uint32_t>((static_cast<float>(y) - static_cast<float>(YPrevious)) / m + 0.5f);
 
-                    Buffer[y * _x_length + x] = 0xff;
+                    Buffer[y * (_x_border + _x_length + _x_border) + x + _x_border] = 0xff;
                 }
             }
         }
@@ -56,7 +56,7 @@ namespace
             {
                 uint32_t y = YPrevious + static_cast<uint32_t>((x - XPrevious) * m + 0.5f);
 
-                Buffer[y * _x_length + x] = 0xff;
+                Buffer[y * (_x_border + _x_length + _x_border) + x + _x_border] = 0xff;
             }
         }
     }
@@ -212,10 +212,10 @@ namespace
         }
 
         fprintf(file, "P5\n");
-        fprintf(file, "%d %d\n", _x_length, (_y_border + _y_length + _y_border) * 3u);
+        fprintf(file, "%d %d\n", _x_border + _x_length + _x_border, (_y_border + _y_length + _y_border) * 3u);
         fprintf(file, "%d\n", 255);
 
-        for (size_t i = 0u; i < (_y_border + _y_length + _y_border) * _x_length * 3u; i++)
+        for (size_t i = 0u; i < (_x_border + _x_length + _x_border) * (_y_border + _y_length + _y_border) * 3u; i++)
         {
             fprintf(file, "%c", Buffer[i]);
         }
@@ -232,7 +232,7 @@ namespace Graphics
     bool plot(Data::DATAS_T& Datas, std::string& Filename)
     {
         bool        retval  = true;
-        uint8_t*    buffer  = new uint8_t[(_y_border + _y_length + _y_border) * _x_length * 3u]{};
+        uint8_t*    buffer  = new uint8_t[(_y_border + _y_length + _y_border) * (_x_border + _x_length + _x_border) * 3u]{};
 
         if (Datas.size() == 0u)
         {
@@ -248,9 +248,9 @@ namespace Graphics
             goto terminate;
         }
 
-        plot_modules    (&buffer[(_y_border + _y_length + _y_border) * _x_length * 0u], Datas);
-        plot_reals      (&buffer[(_y_border + _y_length + _y_border) * _x_length * 1u], Datas);
-        plot_imaginaries(&buffer[(_y_border + _y_length + _y_border) * _x_length * 2u], Datas);
+//      plot_modules    (&buffer[(_y_border + _y_length + _y_border) * (_x_border + _x_length + _x_border) * 0u], Datas);
+        plot_reals      (&buffer[(_y_border + _y_length + _y_border) * (_x_border + _x_length + _x_border) * 1u], Datas);
+//      plot_imaginaries(&buffer[(_y_border + _y_length + _y_border) * (_x_border + _x_length + _x_border) * 2u], Datas);
 
         if (!print(buffer, Filename))
         {
