@@ -9,6 +9,7 @@
 namespace
 {
     constexpr uint32_t  _x_length   = 2000u;
+    constexpr uint32_t  _x_border   = 50u;
     constexpr uint32_t  _y_length   = 900u;
     constexpr uint32_t  _y_border   = 50u;
 
@@ -26,7 +27,6 @@ namespace
 
         if (XPrevious == XCurrent)
         {
-printf("AA\n");
             for (uint32_t y = YPrevious; y <= YCurrent; y++)
             {
                 Buffer[y * _x_length + XPrevious] = 0xff;
@@ -257,9 +257,9 @@ namespace Graphics
             goto terminate;
         }
 
-//      plot_modules    (&buffer[(_y_border + _y_length + _y_border) * _x_length * 0u], Datas);
+        plot_modules    (&buffer[(_y_border + _y_length + _y_border) * _x_length * 0u], Datas);
         plot_reals      (&buffer[(_y_border + _y_length + _y_border) * _x_length * 1u], Datas);
-//      plot_imaginaries(&buffer[(_y_border + _y_length + _y_border) * _x_length * 2u], Datas);
+        plot_imaginaries(&buffer[(_y_border + _y_length + _y_border) * _x_length * 2u], Datas);
 
         if (!print(buffer, Filename))
         {
